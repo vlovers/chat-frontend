@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+}
+
+.emoji-mart-emoji{
+    padding-left: 5px;
+    display: block;
+    margin-bottom: -12px;
+}
+.makeStyles-messageText-12{
+    display: flex;
+}
+
+.chat-input__record-status-bubble {
+    color: rgb(255, 52, 52);
+    width: 10px;
+    height: 10px;
+}

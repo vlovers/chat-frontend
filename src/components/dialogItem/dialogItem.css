@@ -1,0 +1,95 @@
+
+.d-flex{
+    display: flex;
+}
+.dialog__items-content__bottom{
+    justify-content: space-between;
+}
+
+.dialog__item {
+
+    height: 67px;
+    align-items: center;
+    transition: 0.5s;
+    margin-bottom: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    width: 100%;
+}
+
+.dialog__item:hover {
+    cursor: pointer;
+}
+
+.dialog__item.active{
+    background: #F3F7FF;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.dialog-select__item{
+    background: #418FFF;
+}
+
+.dialog__item-name{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #202020;
+}
+
+.dialog__item-content__top{
+    align-items: center;
+    width: 256px;
+    justify-content: space-between;
+}
+
+
+.dialog__item-content{
+    margin-left: 13px;
+}
+
+.dialog__item-content__bottom{
+    align-items: center;
+    width: 256px;
+    justify-content: space-between;
+}
+
+.dialog__item .makeStyles-messageDate-4{
+    margin-right: 0;
+}
+
+.dialog__item .readed{
+    margin-right: 0;
+}
+
+.dialog__item-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 42px;
+}
+
+.dialog__item-new-message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 11px;
+    width: 18px;
+    height: 17px;
+    background: #F46B6B;
+    border-radius: 100%;
+    color: #FFFFFF;
+    padding-top: 1px;
+}
+
+.dialog__item-new-message.more{
+    width: 20px;
+    border-radius: 40%;
+
+}
