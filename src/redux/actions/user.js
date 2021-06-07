@@ -1,64 +1,55 @@
-import { userApi } from "../../utils/api";
-import { openNotification } from '../../utils';
+import { openNotification } from 'utils/helpers';
+import { userApi } from 'utils/api';
 
-const userActions = {
-    setUserData: data => ({
-        type: "USER:SET_DATA",
-        payload: data
-    }),
-    fetchUserData: () => dispatch => {  
-        userApi.getMe().then(({ data }) => {
-            
-            dispatch(userActions.setUserData(data));
-        });
-    },
-    fetchUserLogin: postData => dispatch => {        
-    return userApi.login(postData).then(({ data }) => {
-        const { status, token } = data;
-
-        
-        if (status === "error") {
-            openNotification({
-              title: "Ошибка при авторизации",
-              text: "Неверный логин или пароль",
-              type: "error"
-            });
-        } else {
-            openNotification({
-              title: "Отлично!",
-              text: "Авторизация успешна.",
-              type: "success"
-            });
-            window.axios.defaults.headers.common["token"] = token;
-            window.localStorage["token"] = token;
-            dispatch(userActions.fetchUserData());
+const Actions = {
+  setUserData: data => ({
+    type: 'USER:SET_DATA',
+    payload: data,
+  }),
+  setIsAuth: bool => ({
+    type: 'USER:SET_IS_AUTH',
+    payload: bool,
+  }),
+  fetchUserData: () => dispatch => {
+    userApi
+      .getMe()
+      .then(({ data }) => {
+        dispatch(Actions.setUserData(data));
+      })
+      .catch(err => {
+        if (err.response.status === 403) {
+          dispatch(Actions.setIsAuth(false));
+          delete window.localStorage.token;
         }
-            return data;
-        }); 
-    },
-    fetchUserRegistration: postData => dispatch => {        
-        return userApi.registration(postData).then(({ data }) => {
-            const { status, token } = data;
-            if (status === "error") {
-                // openNotification({
-                //   title: "Ошибка при авторизации",
-                //   text: "Неверный логин или пароль",
-                //   type: "error"
-                // });
-            } else {
-                // openNotification({
-                //   title: "Отлично!",
-                //   text: "Авторизация успешна.",
-                //   type: "success"
-                // });
-                window.axios.defaults.headers.common["token"] = token;
-                window.localStorage["token"] = token;
-                dispatch(userActions.fetchUserData());
-            }
-                return data;
-            }); 
-        },
-
+      });
+  },
+  fetchUserLogin: postData => dispatch => {
+    return userApi
+      .signIn(postData)
+      .then(({ data }) => {
+        const { token } = data;
+        openNotification({
+          title: 'Отлично!',
+          text: 'Авторизация успешна.',
+          type: 'success',
+        });
+        window.axios.defaults.headers.common['token'] = token;
+        window.localStorage['token'] = token;
+        dispatch(Actions.fetchUserData());
+        dispatch(Actions.setIsAuth(true));
+        return data;
+      })
+      .catch(({ response }) => {
+        openNotification({
+          title: 'Ошибка при авторизации',
+          text: 'Неверный логин или пароль',
+          type: 'error',
+        });
+      });
+  },
+  fetchUserRegister: postData => () => {
+    return userApi.signUp(postData);
+  },
 };
 
-export default userActions;
+export default Actions;

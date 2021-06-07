@@ -1,62 +1,54 @@
-import {messagesApi} from '../../utils';
-import dialogsActions from './dialogs'
-const messagesActions = {
-    setMessages: items => ({
-        type: 'MESSAGES:SET_ITEMS',
-        payload:items
-    }),
-    fetchMessages: dialogId => dispatch => {
-        dispatch(messagesActions.setIsLoading(true));
-        messagesApi
-            .getAllByDialogId(dialogId)
-            .then(({ data }) => {
-                dispatch(messagesActions.setMessages(data));
-                dispatch(messagesActions.newMessage(data));
-                
-            })
-            .catch(() => {
-                dispatch(messagesActions.setIsLoading(false));
-            });
-    },
-    fetchSendMessage: (data) => dispatch => {        
-        messagesApi.send(data).then(({ data }) => {
-            
-            // dispatch(messagesActions.addMessage(data));
-        })
-    },
-    addMessage: message => (dispatch, getState) => {
-        console.log(message);
-        
-        const { dialogs } = getState();
-        const { currentDialog } = dialogs;
-        dispatch(dialogsActions.fetchDialogs())
-        
-        if (currentDialog === message.dialog._id) {
-            dispatch({
-                type: "MESSAGES:ADD_MESSAGE",
-                payload: message
-            });
-        }
-    },
-    setIsLoading: bool => ({
-        type: "MESSAGES:SET_IS_LOADING",
-        payload: bool
-    }),
-    removeMessageById: id => dispatch => {
-        if (window.confirm("Вы действительно хотите удалить сообщение?")) {
-            messagesApi
-                .removeById(id)
-                .then(({ data }) => {
-                dispatch({
-                    type: "MESSAGES:REMOVE_MESSAGE",
-                    payload: id
-                });
-                })
-                .catch(() => {
-                dispatch(messagesActions.setIsLoading(false));
-                });
-        }
-    },
-}
+import { messagesApi } from "utils/api";
 
-export default messagesActions;
+const Actions = {
+  setMessages: items => ({
+    type: "MESSAGES:SET_ITEMS",
+    payload: items
+  }),
+  addMessage: message => (dispatch, getState) => {
+    const { dialogs } = getState();
+    const { currentDialogId } = dialogs;
+
+    if (currentDialogId === message.dialog._id) {
+      dispatch({
+        type: "MESSAGES:ADD_MESSAGE",
+        payload: message
+      });
+    }
+  },
+  fetchSendMessage: ({ text, dialogId, attachments }) => dispatch => {
+    return messagesApi.send(text, dialogId, attachments);
+  },
+  setIsLoading: bool => ({
+    type: "MESSAGES:SET_IS_LOADING",
+    payload: bool
+  }),
+  removeMessageById: id => dispatch => {
+    if (window.confirm("Вы действительно хотите удалить сообщение?")) {
+      messagesApi
+        .removeById(id)
+        .then(({ data }) => {
+          dispatch({
+            type: "MESSAGES:REMOVE_MESSAGE",
+            payload: id
+          });
+        })
+        .catch(() => {
+          dispatch(Actions.setIsLoading(false));
+        });
+    }
+  },
+  fetchMessages: dialogId => dispatch => {
+    dispatch(Actions.setIsLoading(true));
+    messagesApi
+      .getAllByDialogId(dialogId)
+      .then(({ data }) => {
+        dispatch(Actions.setMessages(data));
+      })
+      .catch(() => {
+        dispatch(Actions.setIsLoading(false));
+      });
+  }
+};
+
+export default Actions;

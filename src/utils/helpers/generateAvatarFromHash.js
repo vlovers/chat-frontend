@@ -10,7 +10,7 @@ const getCorrectIndex = number => {
   return number > 255 ? 255 : number < 0 ? 0 : number;
 };
 
-const generateAvatarFromHash = hash => {
+export default hash => {
   const [r, g, b] = hash
     .substr(0, 3)
     .split("")
@@ -27,5 +27,3 @@ const generateAvatarFromHash = hash => {
       .toHexString()
   };
 };
-
-export default generateAvatarFromHash;

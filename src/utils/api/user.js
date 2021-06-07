@@ -1,11 +1,9 @@
-import { axios } from "../../core";
+import { axios } from "core";
 
-const user = {
-    getMe: () => axios.get("/user/me"),
-    login: postData => axios.post("/user/login", postData),
-    registration: postData => axios.post("/user/registration", postData),
-    verifyHash: hash => axios.get(`/user/verify?hash=${hash}`),
-    findUsers: query => axios.get("/user/find?query=" + query)
+export default {
+  signIn: postData => axios.post("/user/signin", postData),
+  signUp: postData => axios.post("/user/signup", postData),
+  verifyHash: hash => axios.get("/user/verify?hash=" + hash),
+  getMe: () => axios.get("/user/me"),
+  findUsers: query => axios.get("/user/find?query=" + query)
 };
-
-export default user;

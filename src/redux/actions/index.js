@@ -1,11 +1,4 @@
-import attachmentsActions from './attachments';
-import messagesActions from './messages';
-import dialogsActions from './dialogs';
-import userActions from './user';
-
-export {
-    attachmentsActions,
-    messagesActions,
-    dialogsActions,
-    userActions
-};
+export { default as dialogsActions } from "./dialogs";
+export { default as messagesActions } from "./messages";
+export { default as userActions } from "./user";
+export { default as attachmentsActions } from "./attachments";

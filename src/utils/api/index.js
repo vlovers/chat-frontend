@@ -1,12 +1,4 @@
-import {default as userApi} from './user';
-import {default as filesApi} from './files';
-import {default as dialogsApi} from './dialogs';
-import {default as messagesApi} from './messages';
-
-
-export {
-    userApi,
-    filesApi,
-    dialogsApi,
-    messagesApi
-}
+export { default as dialogsApi } from "./dialogs";
+export { default as messagesApi } from "./messages";
+export { default as userApi } from "./user";
+export { default as filesApi } from "./files";
